@@ -2,7 +2,8 @@ import { SEED_ROWS } from './seed'
 import type { EntryRow } from './types'
 
 // 本地持久化：数据放在 localStorage 里，刷新、关掉再打开都还在。
-const STORAGE_KEY = 'shield-tunnel-construction:entries'
+// v2：管线样例改由 seed-engine 灌入（埋深/净距为数值、四状态齐全），与 v1 的字符串样例不兼容，换键干净切换。
+const STORAGE_KEY = 'shield-tunnel-construction:entries:v2'
 
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T
@@ -56,4 +57,9 @@ export function resetRows(key: string): EntryRow[] {
 
 export function storageKey(): string {
   return STORAGE_KEY
+}
+
+/** 放弃内存缓存，下次读取重新从 localStorage 装载（主要给事务补偿/测试使用）。 */
+export function invalidateCache(): void {
+  cache = null
 }

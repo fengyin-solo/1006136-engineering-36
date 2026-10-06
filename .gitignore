@@ -85,3 +85,6 @@ desktop.ini
 *.db
 *.pid
 *.seed
+
+# 灌样例 CLI 的本地数据文件（检查点与管线表），不入库
+frontend/.data/

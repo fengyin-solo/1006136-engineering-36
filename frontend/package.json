@@ -4,22 +4,31 @@
   "version": "1.0.0",
   "type": "module",
   "repoKind": "frontend-only",
+  "engines": {
+    "node": "20.20.2",
+    "npm": ">=10.8.2"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "seed": "tsx scripts/seed-utility.mts",
+    "seed:reset": "tsx scripts/reset-utility.mts",
+    "selfcheck": "tsx scripts/selfcheck.mts",
+    "selfcheck:browser": "tsx scripts/selfcheck-browser.mts"
   },
   "dependencies": {
-    "pinia": "^2.1.7",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "pinia": "2.1.7",
+    "vue": "3.4.21",
+    "vue-router": "4.3.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.30",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "typescript": "^5.4.3",
-    "vite": "^5.2.6",
-    "vue-tsc": "^2.0.7"
+    "@types/node": "20.11.30",
+    "@vitejs/plugin-vue": "5.0.4",
+    "tsx": "4.19.2",
+    "typescript": "5.4.3",
+    "vite": "5.2.6",
+    "vue-tsc": "2.0.7"
   }
 }

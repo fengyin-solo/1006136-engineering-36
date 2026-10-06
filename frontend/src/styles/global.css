@@ -35,3 +35,22 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .error-text { color: #b42318; }
 .status-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 10px; font-size: 12px; color: var(--muted); }
 .legend-item { background: #eef2f7; border-radius: 999px; padding: 2px 10px; }
+
+/* ===== 灌样例面板 / 待办面板 / 角色切换 ===== */
+.seed-panel, .todo-panel { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin: 0 0 14px; }
+.seed-panel-head, .todo-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.seed-panel h3, .todo-panel h3 { margin: 0; font-size: 14px; }
+.seed-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.seed-hint { color: var(--muted); font-size: 12px; }
+.seed-report { border-top: 1px dashed var(--border); padding-top: 8px; font-size: 13px; }
+.seed-report p { margin: 4px 0; }
+.seed-ok { color: #067647; }
+.seed-fail { color: #b42318; }
+.seed-list { margin: 4px 0; padding-left: 18px; }
+.seed-insert { color: #067647; }
+.seed-skip { color: var(--muted); }
+.seed-reject { color: #b42318; }
+.role-switch { margin-left: 10px; }
+.role-switch select { font-size: 12px; padding: 2px 4px; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.link:disabled { color: var(--muted); cursor: not-allowed; }

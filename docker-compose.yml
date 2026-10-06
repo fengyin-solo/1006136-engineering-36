@@ -2,4 +2,5 @@ services:
   frontend:
     build: ./frontend
     ports:
+      # 开发（vite dev 5173）与部署（vite preview 5173）同一端口、同一份锁文件。
       - "5173:5173"
