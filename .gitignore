@@ -85,3 +85,6 @@ desktop.ini
 *.db
 *.pid
 *.seed
+
+# ===== 初始化脚本产出的本地数据 =====
+frontend/data/

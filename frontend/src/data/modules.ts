@@ -144,6 +144,8 @@ export const MODULES: ModuleMeta[] = [
     actions: ["提交探查", "安排迁改", "确认恢复"],
     actionTargets: {"提交探查": "已探明", "安排迁改": "迁改中", "确认恢复": "已恢复"},
     metrics: ["待探查管线", "迁改中管线", "已恢复管线"],
+    // 先探查、再探明、再迁改、最后恢复：谁先谁后由此拍板，动作只能逐格往后走
+    orderedTransitions: true,
   },
   {
     key: "progress",

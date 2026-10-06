@@ -18,6 +18,30 @@
       </article>
     </div>
 
+    <!-- 灌完样例的结论落到这里：待迁移管线就是进度节点上的待办，数量与管线探查页同步 -->
+    <section class="todo-panel">
+      <header class="todo-head">
+        <h3>待办清单 · 待迁移管线跟进</h3>
+        <span class="todo-count">待迁移管线 {{ relocationTodos.length }} 条</span>
+      </header>
+      <table v-if="relocationTodos.length" class="data-table">
+        <thead>
+          <tr><th>管线编号</th><th>管线类型</th><th>埋设深度(m)</th><th>与隧道净距(m)</th><th>当前状态</th><th>迁改方案</th></tr>
+        </thead>
+        <tbody>
+          <tr v-for="row in relocationTodos" :key="String(row.id)">
+            <td>{{ row['管线编号'] }}</td>
+            <td>{{ row['管线类型'] }}</td>
+            <td>{{ row['埋设深度'] }}</td>
+            <td>{{ row['与隧道净距'] }}</td>
+            <td>{{ row.status }}</td>
+            <td>{{ row['迁改方案'] }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p v-else class="empty-state">暂无待迁移管线待办</p>
+    </section>
+
     <p class="status-legend">
       <span v-for="item in statusSummary" :key="item.status" class="legend-item">
         {{ item.status }}：{{ item.count }}
@@ -79,19 +103,25 @@ import {
   moduleMeta,
   runAction as applyAction,
 } from '@/api/local-service'
+import { listRows } from '@/data/local-store'
+import { pendingRelocationPipelines } from '@/data/pipeline-domain'
+import { useSessionStore } from '@/stores/session'
 import type { EntryRow } from '@/data/types'
 
+const store = useSessionStore()
 const meta = moduleMeta('progress')
 const columns = ["节点编号", "节点名称", "计划完成日", "实际完成日", "计划掘进量", "实际掘进量", "偏差天数", "节点状态"]
 const actions = ["开始节点", "确认完成", "登记延期"]
 const statuses = ["未开始", "进行中", "已完成", "已延期"]
-const stats = [{"label": "进行中节点", "value": 0}, {"label": "已完成节点", "value": 0}, {"label": "延期节点", "value": 0}]
+const stats = ref([{ label: "进行中节点", value: 0 }, { label: "已完成节点", value: 0 }, { label: "延期节点", value: 0 }])
 
 const rows = ref<EntryRow[]>([])
 const total = ref(0)
 const errorMessage = ref('')
 const filters = ref<Record<string, string>>({})
 const filterFields = columns.slice(0, 3)
+// 待办直接取管线探查数据：两处只认 pipeline-domain 一份口径
+const relocationTodos = computed(() => pendingRelocationPipelines(listRows('utility')))
 const statusSummary = computed(() =>
   statuses.map((status: string) => ({
     status,
@@ -114,7 +144,7 @@ function openCreate() {
 
 function runAction(action: string, row: EntryRow) {
   errorMessage.value = ''
-  const result = applyAction(meta.key, Number(row.id), action)
+  const result = applyAction(meta.key, Number(row.id), action, store.role)
   if (!result.ok) {
     errorMessage.value = result.message
     return
@@ -128,6 +158,12 @@ function reload() {
     const payload = listEntries(meta.key, filters.value)
     rows.value = payload.items
     total.value = payload.total
+    const summary = new Map(statusSummary.value.map((item) => [item.status, item.count]))
+    stats.value = [
+      { label: '进行中节点', value: summary.get('进行中') ?? 0 },
+      { label: '已完成节点', value: summary.get('已完成') ?? 0 },
+      { label: '延期节点', value: summary.get('已延期') ?? 0 },
+    ]
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : '进度节点列表读取失败'
   }

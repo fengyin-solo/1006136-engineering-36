@@ -3,3 +3,6 @@ services:
     build: ./frontend
     ports:
       - "5173:5173"
+    environment:
+      # 容器与本地读同一份锁文件、同一个 Node 大版本
+      - NODE_ENV=development
